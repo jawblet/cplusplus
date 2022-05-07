@@ -1,73 +1,83 @@
 #include <iostream>
 #include <vector>
-using namespace std; 
+#include <ctime>
+using namespace std;
+
+void quick_sort(vector<int>& v, int low, int high); 
+void insertion_sort(vector<int>& v, int low, int high);
 
 const int SIZE = 100;
 const int MAX = 1000; 
 
-void quick_sort(vector<int>& v, int low, int high);
-void insertion_sort(vector<int>& v, int low, int high);
-
 int main() {
-    vector<int> v;
-    for(int i = 0; i < SIZE; i++) {
+    vector<int> v; 
+    for(int i = 0; i < SIZE; i++) 
         v.push_back(rand() % MAX + 1);
-    }
-
+    
     quick_sort(v, 0, v.size() - 1);
 
-    for(int i: v)
-        cout << i << " "; 
+    for(int i = 0; i < v.size(); i++) {
+       cout << v[i] << " ";
 
-    return 0; 
+       if(i != 0 && v[i] < v[i - 1]) 
+        cout << "\n Error! " << v[i] << " is not < " << v[i - 1] << " \n"; 
+   }
+
+    return 0;
 }
-
+ 
 void quick_sort(vector<int>& v, int low, int high) {
     if(low + 10 > high) {
         insertion_sort(v, low, high); 
-        return; 
+        return;
     }
+        
 
-    int mid = (low + high) / 2;
-
-    if(v[low] > v[mid])
-        swap(v[low], v[mid]);
-    if(v[low] > v[high])
+    // get pivot value + sort 3 points 
+    int mid = (low + high) / 2; 
+    if(v[mid] < v[low]) 
+        swap(v[mid], v[low]);
+    if(v[high] < v[low])
         swap(v[high], v[low]);
-    if(v[mid] > v[high])
-        swap(v[mid], v[high]); 
+    if(v[high] < v[mid]) 
+        swap(v[high], v[mid]); 
     
-    int pivot = v[mid];
+    int pivot = v[mid]; 
 
-    swap(v[mid], v[high - 1]);  // move pivot
-    
+    // swap out pivot
+    swap(v[mid], v[high - 1]); 
+
+    // sort around pivot 
     int i = low; 
-    int j = high - 1; 
+    int j = high - 1;
 
     while(true) {
         while(v[++i] < pivot) {}
         while(v[--j] > pivot) {}
-
-        if(i < j) {
-            swap(v[i], v[j]);
-        } else {
+        if(i < j)
+            swap(v[i], v[j]); 
+        else
             break; 
-        }
     }
 
-    swap(v[i], v[high - 1]); 
+    // swap pivot back in 
+    swap(v[i], v[high - 1]);
 
+    // i is sorted already, avoid passing it again 
     quick_sort(v, low, i - 1);
-    quick_sort(v, i + 1, high);
+    quick_sort(v, i + 1, high); 
 }
 
 void insertion_sort(vector<int>& v, int low, int high) {
-    for(int i = 0; i < v.size() - 1; i++) {
-        int j = i; 
+    for(int i = low + 1; i <= high; i++) {
+        int j = i;
+        int current = v[j]; 
 
-        while(j >= 0 && v[j] > v[j + 1]) {
-            swap(v[j], v[j + 1]);
-            j--;
+        while(j > low && v[j - 1] > current) {
+            v[j] = v[j - 1];
+            j--; 
         }
+
+        v[j] = current;
     }
 }
