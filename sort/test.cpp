@@ -6,19 +6,46 @@ using namespace std;
 const int SIZE = 100;
 const int MAX = 1000; 
 
-void selection_sort(vector<int>& v) {
-    for(int i = 0; i < v.size() - 1; i++) {
-        int min = v[i];
-        int min_index = i;
-        for(int j = i + 1; j < v.size(); j++) {
-            if(v[j] < min) {
-                min = v[j];
-                min_index = j;
-            }
+void merge_sort(vector<int>& v, int low, int high) {
+    if(low >= high) {
+        return; 
+    }
+
+    int mid = (low + high) / 2; 
+    merge_sort(v, low, mid); 
+    merge_sort(v, mid + 1, high); 
+
+    int lower_l = low, upper_l = mid; 
+    int lower_r = mid + 1, upper_r = high;
+
+    int i = lower_l;
+    int j = lower_r; 
+    vector<int> temp; 
+
+    while(i <= upper_l && j <= upper_r) {
+        if(v[i] > v[j]) {
+            temp.push_back(v[j]);
+            j++;
+        } else {
+            temp.push_back(v[i]);
+            i++;
         }
-        int original = v[i];
-        v[min_index] = original;
-        v[i] = min; 
+    }
+
+    // push remainder of either half to the temp array
+    for(; i <= upper_l; i++) {
+        temp.push_back(v[i]);
+    }
+
+    for(; j <= upper_r; j++) {
+        temp.push_back(v[j]);
+    }
+
+    // copy temp array to real array 
+    int count = 0; 
+    for(int k = lower_l; k <= upper_r; k++) {
+        v[k] = temp[count];
+        count++; 
     }
 }
 
@@ -28,7 +55,8 @@ int main() {
     for(int i = 0; i < SIZE; i++) 
         v.push_back(rand() % MAX + 1);
     
-    selection_sort(v); 
+    // sort 
+    merge_sort(v, 0, v.size() - 1); 
 
     // print new order and check if sorted 
     for(int i = 0; i < v.size(); i++) {
@@ -41,3 +69,7 @@ int main() {
 
     return 0; 
 }
+
+/*
+ 
+    */
