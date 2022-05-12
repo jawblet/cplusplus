@@ -68,10 +68,7 @@ void List<T>::reverse() {
 
     prev_node->prev = head;
     tail->prev = head->next; 
-    head->next = prev_node; 
-
-    cout << "\ntail prev: " << tail->prev->data << endl; 
-    
+    head->next = prev_node;     
 }
 
 int main() {
