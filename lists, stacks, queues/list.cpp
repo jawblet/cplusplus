@@ -1,6 +1,6 @@
 #include <iostream>
 #include <list>
-using namespace std;
+using namespace std; 
 
 class LL {
     list<int> data;
