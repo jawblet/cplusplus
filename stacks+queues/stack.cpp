@@ -3,7 +3,7 @@
 #include <ctime>
 using namespace std;
 
-template <class T>
+template <class T> 
 class Stack {
     list<T> data; 
     public:
@@ -17,7 +17,6 @@ class Stack {
         bool is_empty() { return data.empty(); }
         int size() { return data.size(); }
         void clear() { data.clear(); }
-        void swap(T item1, T item2) { swap(item1, item2); }
         void bubble_sort(); 
         void assign(T data);
 };
@@ -30,29 +29,31 @@ T Stack<T>::pop() {
 }
 
 // bubble sort 
-// move larger numbers forward 
 template <class T>
 void Stack<T>::bubble_sort() {
     typename list<T>::iterator a = get_begin(); 
 
-    bool swapped = false;
+    while(a++ != get_end()) {
+        bool swapped = false;
 
-    while(a != get_end()) {
+        typename list<T>::iterator e = get_end();
         typename list<T>::iterator b = get_begin();
-        for(b++; b != get_end(); b++) {
-           
-            T a_value = *a;
-            T b_value = *b;
-            cout << a_value << " "<< b_value  << endl; 
+        typename list<T>::iterator c = get_begin();
+        c++; 
 
-            if(a_value > b_value) {
-                swap(a_value, b_value);
+        while(c != e) {
+            cout << *b << " " << *c << endl;
+           if(*b > *c) {
+                swap(*b, *c);
                 swapped = true; 
+            } 
+            b++;
+            c++; 
+        } 
+
+         if(!swapped) {
+                break; 
             }
-        }
-        if(!swapped)
-            break; 
-        a++; 
     }
 } 
 
@@ -63,17 +64,19 @@ int main() {
         stack.push(rand() % 100 + 1);
     }
 
-    list<int>::iterator it = stack.get_begin()++; 
-
-    while(it != stack.get_end()) {
-        cout << *it++ << endl;
+    list<int>::iterator u_it = stack.get_begin(); 
+    while(u_it != stack.get_end()) {
+        cout << *u_it << " ";
+        u_it++; 
     }
 
     cout << "\nsorted: " << endl; 
     stack.bubble_sort();
 
+    list<int>::iterator it = stack.get_begin(); 
     while(it != stack.get_end()) {
-        cout << *it++ << endl;
+        cout << *it << " ";
+        it++; 
     }
 
 
